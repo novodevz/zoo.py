@@ -2,6 +2,8 @@ import json
 import os
 import time
 
+from icecream import ic
+
 
 def cls():
     os.system("cls" if os.name == "nt" else "clear")
@@ -33,15 +35,15 @@ def load_zoo(ZOO_PATH):
 
 def input_validator(inp: str):
     if len(inp) == 1 and inp.isdigit() and 0 < int(inp) < 7:
-        print(inp)
         return inp
     else:
         return 0
 
 
 def dsp_menu(Act, zoo):
-    time.sleep(1)
-    print("\n###zoo app###\n")
+    ic(time.sleep(1))
+    title = "###zoo app###"
+    print(f"\n{title}\n")
     if len(zoo) == 0:
         for act in Act:
             if act.value in [1, 3, 6]:
@@ -104,23 +106,28 @@ def add(zoo: list[dict], ZOO_PATH):
 def update(zoo: list[dict], ZOO_PATH):
     print_zoo(zoo)
     print("\n")
-    upd_idx = int(input("select animal index: "))
-    zoo[upd_idx] = {
-        "type": input("enter type: "),
-        "name": input("name: "),
-        "age": input("age: "),
-    }
-    print_zoo(zoo)
-    with open(ZOO_PATH, "w") as file:
-        json.dump(zoo, file, indent=2)
+    upd_idx = input("select animal index: ")
+    if upd_idx.isdigit() and 0 <= int(upd_idx) < len(zoo):
+        zoo[int(upd_idx)] = {
+            "type": input("enter type: "),
+            "name": input("name: "),
+            "age": input("age: "),
+        }
+        print_zoo(zoo)
+        with open(ZOO_PATH, "w") as file:
+            json.dump(zoo, file, indent=2)
+    else:
+        print("invalid input")
 
 
 def delete(zoo: list[dict], ZOO_PATH):
     print_zoo(zoo)
-    del_idx = int(input("\nselect animal index: "))
-    if 0 <= del_idx < len(zoo):
-        del zoo[del_idx]
-    print_zoo(zoo)
+    del_idx = input("\nselect animal index: ")
+    if del_idx.isdigit() and 0 <= int(del_idx) < len(zoo):
+        del zoo[int(del_idx)]
+        print_zoo(zoo)
+    else:
+        print("invalid input")
     with open(ZOO_PATH, "w") as file:
         json.dump(zoo, file, indent=2)
 

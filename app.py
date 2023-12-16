@@ -34,7 +34,7 @@ def main():
             elif act == Act.EXT:
                 mdl.ext()
             else:
-                print("invalid input, select only 1-6 buttons...")
+                print("invalid input")
 
     except KeyboardInterrupt:
         print("\nFIN")
